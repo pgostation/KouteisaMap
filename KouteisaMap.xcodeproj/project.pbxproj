@@ -12,6 +12,14 @@
 		1282EAE31F4DC1890036B87F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1282EAE11F4DC1890036B87F /* Main.storyboard */; };
 		1282EAE51F4DC1890036B87F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1282EAE41F4DC1890036B87F /* Assets.xcassets */; };
 		1282EAE81F4DC1890036B87F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1282EAE61F4DC1890036B87F /* LaunchScreen.storyboard */; };
+		1282EAF11F4DC50D0036B87F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAF01F4DC50D0036B87F /* MapViewController.swift */; };
+		1282EAF31F4DC5910036B87F /* TileLayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAF21F4DC5910036B87F /* TileLayersView.swift */; };
+		1282EAF51F4DC5B10036B87F /* MapInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAF41F4DC5B10036B87F /* MapInfoView.swift */; };
+		1282EAF71F4DC5CB0036B87F /* MapControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAF61F4DC5CB0036B87F /* MapControlView.swift */; };
+		1282EAF91F4DC6040036B87F /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAF81F4DC6040036B87F /* ControlView.swift */; };
+		1282EAFC1F4DC6AF0036B87F /* Chiriin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAFB1F4DC6AF0036B87F /* Chiriin.swift */; };
+		1282EAFF1F4DC6F10036B87F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAFE1F4DC6F10036B87F /* SettingsViewController.swift */; };
+		1282EB011F4DC6FC0036B87F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EB001F4DC6FC0036B87F /* Settings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +30,14 @@
 		1282EAE41F4DC1890036B87F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1282EAE71F4DC1890036B87F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1282EAE91F4DC1890036B87F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1282EAF01F4DC50D0036B87F /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Map/MapViewController.swift; sourceTree = "<group>"; };
+		1282EAF21F4DC5910036B87F /* TileLayersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileLayersView.swift; path = Map/TileLayersView.swift; sourceTree = "<group>"; };
+		1282EAF41F4DC5B10036B87F /* MapInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapInfoView.swift; path = Map/MapInfoView.swift; sourceTree = "<group>"; };
+		1282EAF61F4DC5CB0036B87F /* MapControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapControlView.swift; path = Map/MapControlView.swift; sourceTree = "<group>"; };
+		1282EAF81F4DC6040036B87F /* ControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControlView.swift; path = Map/ControlView.swift; sourceTree = "<group>"; };
+		1282EAFB1F4DC6AF0036B87F /* Chiriin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Chiriin.swift; path = Data/Chiriin.swift; sourceTree = "<group>"; };
+		1282EAFE1F4DC6F10036B87F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Settings/SettingsViewController.swift; sourceTree = "<group>"; };
+		1282EB001F4DC6FC0036B87F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Settings/Settings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,12 +72,44 @@
 			children = (
 				1282EADD1F4DC1890036B87F /* AppDelegate.swift */,
 				1282EADF1F4DC1890036B87F /* ViewController.swift */,
+				1282EAEF1F4DC4EB0036B87F /* Map */,
+				1282EAFD1F4DC6E00036B87F /* Settings */,
+				1282EAFA1F4DC6970036B87F /* Data */,
 				1282EAE11F4DC1890036B87F /* Main.storyboard */,
 				1282EAE41F4DC1890036B87F /* Assets.xcassets */,
 				1282EAE61F4DC1890036B87F /* LaunchScreen.storyboard */,
 				1282EAE91F4DC1890036B87F /* Info.plist */,
 			);
 			path = KouteisaMap;
+			sourceTree = "<group>";
+		};
+		1282EAEF1F4DC4EB0036B87F /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				1282EAF01F4DC50D0036B87F /* MapViewController.swift */,
+				1282EAF21F4DC5910036B87F /* TileLayersView.swift */,
+				1282EAF41F4DC5B10036B87F /* MapInfoView.swift */,
+				1282EAF61F4DC5CB0036B87F /* MapControlView.swift */,
+				1282EAF81F4DC6040036B87F /* ControlView.swift */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
+		1282EAFA1F4DC6970036B87F /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1282EAFB1F4DC6AF0036B87F /* Chiriin.swift */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		1282EAFD1F4DC6E00036B87F /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1282EAFE1F4DC6F10036B87F /* SettingsViewController.swift */,
+				1282EB001F4DC6FC0036B87F /* Settings.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +185,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1282EAF31F4DC5910036B87F /* TileLayersView.swift in Sources */,
 				1282EAE01F4DC1890036B87F /* ViewController.swift in Sources */,
+				1282EAF11F4DC50D0036B87F /* MapViewController.swift in Sources */,
 				1282EADE1F4DC1890036B87F /* AppDelegate.swift in Sources */,
+				1282EB011F4DC6FC0036B87F /* Settings.swift in Sources */,
+				1282EAF51F4DC5B10036B87F /* MapInfoView.swift in Sources */,
+				1282EAF91F4DC6040036B87F /* ControlView.swift in Sources */,
+				1282EAFC1F4DC6AF0036B87F /* Chiriin.swift in Sources */,
+				1282EAF71F4DC5CB0036B87F /* MapControlView.swift in Sources */,
+				1282EAFF1F4DC6F10036B87F /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +321,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L5M8K6XWJN;
 				INFOPLIST_FILE = KouteisaMap/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pgostation.KouteisaMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -278,6 +335,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L5M8K6XWJN;
 				INFOPLIST_FILE = KouteisaMap/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pgostation.KouteisaMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
