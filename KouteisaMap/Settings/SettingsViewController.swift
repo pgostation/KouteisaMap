@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import MapKit
 
 enum SettingsEnum: String {
+    case search = "地名検索"
     case shareApp = "Twitter等でアプリを紹介する"
 }
 
@@ -46,11 +48,44 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = mySource.tableList[indexPath.item]
         switch item {
+        case .search:
+            searchAction()
         case .shareApp:
             shareApp()
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func searchAction() {
+        ViewUtil.textInput(msg: "地名を入力してください", defaultText: "", okName: "検索", callback: { text in
+            let request = MKLocalSearchRequest()
+            request.naturalLanguageQuery = text
+            
+            MKLocalSearch(request: request).start(completionHandler: {
+                (response: MKLocalSearchResponse?, error: Error?) in
+                
+                if let error = error {
+                    print("searchAction(): \(error.localizedDescription)")
+                    return
+                }
+                
+                if response?.mapItems.count == 0 {
+                    ViewUtil.alert(msg: "見つかりませんでした")
+                    return
+                }
+                
+                if let item = response?.mapItems.first {
+                    self.view.alpha = 0.5
+                    
+                    MapView.instance?.setCenter(item.placemark.coordinate, animated: false)
+                    
+                    DispatchQueue.main.async {
+                        self.close()
+                    }
+                }
+            })
+        })
     }
     
     // 共有パネルを表示
@@ -77,7 +112,7 @@ class SettingsView: UITableView {
 }
 
 class SettingsTable: NSObject, UITableViewDataSource {
-    var tableList:[SettingsEnum] = [.shareApp]
+    var tableList:[SettingsEnum] = [.search, .shareApp]
     
     override init() {
         super.init()
@@ -95,6 +130,8 @@ class SettingsTable: NSObject, UITableViewDataSource {
         cell.detailTextLabel?.text = ""
         
         switch item {
+        case .search:
+            cell.accessoryType = .disclosureIndicator
         case .shareApp:
             cell.accessoryType = .disclosureIndicator
         }

@@ -34,7 +34,8 @@ class ControlView: UIView {
         
         self.clipsToBounds = true
         
-        self.menuButton.backgroundColor = UIColor.orange
+        self.menuButton.setTitle("⚙", for: .normal)
+        self.menuButton.backgroundColor = UIColor.gray
         self.menuButton.layer.cornerRadius = buttonWidth / 2
         self.menuButton.clipsToBounds = true
     }
@@ -42,19 +43,19 @@ class ControlView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let bounds = self.superview?.frame ?? UIScreen.main.bounds
+        //let bounds = self.superview?.frame ?? UIScreen.main.bounds
         
         let buttonWidth: CGFloat = 48
         
-        self.frame = CGRect(x: 0,
-                            y: bounds.height - buttonWidth - 10,
-                            width: bounds.width,
+        self.frame = CGRect(x: 5,
+                            y: 25,
+                            width: buttonWidth,
                             height: buttonWidth)
         
-        self.menuButton.frame = CGRect(x: self.frame.width / 2 - buttonWidth / 2,
-                                       y: self.frame.height - buttonWidth,
+        self.menuButton.frame = CGRect(x: 0,
+                                       y: 0,
                                        width: buttonWidth,
-                                           height: buttonWidth)
+                                       height: buttonWidth)
     }
     
     // 設定画面に移動

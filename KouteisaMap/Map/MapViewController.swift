@@ -25,6 +25,8 @@ class MapViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
             self.view.setNeedsLayout()
         })
+        
+        view.locationButton.addTarget(self, action: #selector(locationAction), for: .touchUpInside)
     }
     
     private var timer: Timer?
@@ -46,6 +48,16 @@ class MapViewController: UIViewController {
         
         counter += 1
     }
+    
+    func locationAction() {
+        guard let mapView = self.view as? MapView else { return }
+        
+        if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+            ViewUtil.alert(msg: "位置情報取得が許可されていません")
+        }
+        
+        mapView.setCenter(mapView.userLocation.coordinate, animated: false)
+    }
 }
 
 class MapView: MKMapView {
@@ -56,6 +68,7 @@ class MapView: MKMapView {
     let mapControlView = MapControlView()
     let mapInfoView = MapInfoView()
     let centerLabel = UILabel()
+    let locationButton = UIButton()
     let locationManager = CLLocationManager()
     
     init() {
@@ -68,6 +81,7 @@ class MapView: MKMapView {
         self.addSubview(centerLabel)
         self.addSubview(controlView)
         self.addSubview(mapControlView)
+        self.addSubview(locationButton)
         
         // MapView関連の設定
         mapSetUp()
@@ -108,6 +122,11 @@ class MapView: MKMapView {
         self.centerLabel.font = UIFont.systemFont(ofSize: 24)
         self.centerLabel.textColor = UIColor(red: 0.2, green: 0.3, blue: 0.8, alpha: 0.7)
         self.centerLabel.textAlignment = .center
+        
+        self.locationButton.setTitle("➢", for: .normal)
+        self.locationButton.backgroundColor = UIColor.gray
+        self.locationButton.layer.cornerRadius = 48 / 2
+        self.locationButton.clipsToBounds = true
     }
     
     override func layoutSubviews() {
@@ -129,6 +148,11 @@ class MapView: MKMapView {
                                         y: bounds.height / 2 - 2,
                                         width: 24,
                                         height: 24)
+        
+        self.locationButton.frame = CGRect(x: 5,
+                                           y: bounds.height - 48 - 5,
+                                           width: 48,
+                                           height: 48)
     }
     
     func refresh() {

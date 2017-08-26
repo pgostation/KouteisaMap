@@ -74,7 +74,15 @@ class MapControlView: UIView {
     }
     
     // 拡大
+    private var zoomLock = false
     func largerAction() {
+        // 連打禁止
+        if zoomLock { return }
+        zoomLock = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+            self.zoomLock = false
+        })
+        
         guard let mapView = MapView.instance else { return }
         
         var region = mapView.region
@@ -91,6 +99,13 @@ class MapControlView: UIView {
     
     // 縮小
     func smallerAction() {
+        // 連打禁止
+        if zoomLock { return }
+        zoomLock = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+            self.zoomLock = false
+        })
+        
         guard let mapView = MapView.instance else { return }
         
         var region = mapView.region

@@ -20,6 +20,7 @@
 		1282EAFC1F4DC6AF0036B87F /* Chiriin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAFB1F4DC6AF0036B87F /* Chiriin.swift */; };
 		1282EAFF1F4DC6F10036B87F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EAFE1F4DC6F10036B87F /* SettingsViewController.swift */; };
 		1282EB011F4DC6FC0036B87F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EB001F4DC6FC0036B87F /* Settings.swift */; };
+		1282EB041F4F132E0036B87F /* ViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EB031F4F132E0036B87F /* ViewUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		1282EAFB1F4DC6AF0036B87F /* Chiriin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Chiriin.swift; path = Data/Chiriin.swift; sourceTree = "<group>"; };
 		1282EAFE1F4DC6F10036B87F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Settings/SettingsViewController.swift; sourceTree = "<group>"; };
 		1282EB001F4DC6FC0036B87F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Settings/Settings.swift; sourceTree = "<group>"; };
+		1282EB031F4F132E0036B87F /* ViewUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewUtil.swift; path = Util/ViewUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				1282EAEF1F4DC4EB0036B87F /* Map */,
 				1282EAFD1F4DC6E00036B87F /* Settings */,
 				1282EAFA1F4DC6970036B87F /* Data */,
+				1282EB021F4F13190036B87F /* Util */,
 				1282EAE11F4DC1890036B87F /* Main.storyboard */,
 				1282EAE41F4DC1890036B87F /* Assets.xcassets */,
 				1282EAE61F4DC1890036B87F /* LaunchScreen.storyboard */,
@@ -112,6 +115,14 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
+		1282EB021F4F13190036B87F /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				1282EB031F4F132E0036B87F /* ViewUtil.swift */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -145,7 +156,7 @@
 					1282EAD91F4DC1890036B87F = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = L5M8K6XWJN;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -187,6 +198,7 @@
 			files = (
 				1282EAF31F4DC5910036B87F /* TileLayersView.swift in Sources */,
 				1282EAE01F4DC1890036B87F /* ViewController.swift in Sources */,
+				1282EB041F4F132E0036B87F /* ViewUtil.swift in Sources */,
 				1282EAF11F4DC50D0036B87F /* MapViewController.swift in Sources */,
 				1282EADE1F4DC1890036B87F /* AppDelegate.swift in Sources */,
 				1282EB011F4DC6FC0036B87F /* Settings.swift in Sources */,
@@ -319,12 +331,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = L5M8K6XWJN;
 				INFOPLIST_FILE = KouteisaMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = pgostation.KouteisaMap;
+				PRODUCT_BUNDLE_IDENTIFIER = pgostation.kouteisamap2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8cad9759-fee3-45c6-ad16-978c06c67790";
+				PROVISIONING_PROFILE_SPECIFIER = KouteisaMap;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -333,12 +348,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = L5M8K6XWJN;
 				INFOPLIST_FILE = KouteisaMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = pgostation.KouteisaMap;
+				PRODUCT_BUNDLE_IDENTIFIER = pgostation.kouteisamap2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8cad9759-fee3-45c6-ad16-978c06c67790";
+				PROVISIONING_PROFILE_SPECIFIER = KouteisaMap;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
