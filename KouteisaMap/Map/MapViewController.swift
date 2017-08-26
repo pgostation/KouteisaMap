@@ -27,6 +27,9 @@ class MapViewController: UIViewController {
         })
         
         view.locationButton.addTarget(self, action: #selector(locationAction), for: .touchUpInside)
+        
+        let kupaaGesture = UIPinchGestureRecognizer(target: self, action: #selector(kupaaAction(_:)))
+        view.addGestureRecognizer(kupaaGesture)
     }
     
     private var timer: Timer?
@@ -58,12 +61,24 @@ class MapViewController: UIViewController {
         
         mapView.setCenter(mapView.userLocation.coordinate, animated: false)
     }
+    
+    func kupaaAction(_ gesture: UIPinchGestureRecognizer) {
+        guard let mapView = self.view as? MapView else { return }
+        
+        if gesture.scale > 1.1 {
+            mapView.mapControlView.largerAction()
+        }
+        else if gesture.scale < 0.9 {
+            mapView.mapControlView.smallerAction()
+        }
+    }
 }
 
 class MapView: MKMapView {
     static weak var instance: MapView?
     private let myDelegate = MapViewDelegate()
     let tileLayersView = TileLayersView(tileSize: 20)
+    let scaleView = ScaleView()
     let controlView = ControlView()
     let mapControlView = MapControlView()
     let mapInfoView = MapInfoView()
@@ -77,11 +92,18 @@ class MapView: MKMapView {
         MapView.instance = self
         
         self.addSubview(tileLayersView)
-        self.addSubview(mapInfoView)
-        self.addSubview(centerLabel)
-        self.addSubview(controlView)
-        self.addSubview(mapControlView)
-        self.addSubview(locationButton)
+        DispatchQueue.main.async { // 遅いiPadでも表示できるように、細工している
+            DispatchQueue.main.async {
+                self.addSubview(self.scaleView)
+                self.addSubview(self.mapInfoView)
+                self.addSubview(self.centerLabel)
+                self.addSubview(self.controlView)
+                self.addSubview(self.mapControlView)
+                self.addSubview(self.locationButton)
+                
+                self.layoutSubviews()
+            }
+        }
         
         // MapView関連の設定
         mapSetUp()
@@ -106,8 +128,9 @@ class MapView: MKMapView {
         
         // プロパティ設定
         self.isRotateEnabled = false
-        self.isZoomEnabled = false
+        //self.isZoomEnabled = false
         self.isPitchEnabled = false
+        self.showsScale = true
         
         // 位置表示
         if CLLocationManager.authorizationStatus() == .notDetermined {
@@ -118,14 +141,14 @@ class MapView: MKMapView {
     
     // サブビューの設定
     private func setUp() {
-        self.centerLabel.text = "○"
-        self.centerLabel.font = UIFont.systemFont(ofSize: 24)
+        self.centerLabel.text = "＋"
+        self.centerLabel.font = UIFont.systemFont(ofSize: 28)
         self.centerLabel.textColor = UIColor(red: 0.2, green: 0.3, blue: 0.8, alpha: 0.7)
         self.centerLabel.textAlignment = .center
         
-        self.locationButton.setTitle("➢", for: .normal)
+        self.locationButton.setTitle("現在地へ", for: .normal)
         self.locationButton.backgroundColor = UIColor.gray
-        self.locationButton.layer.cornerRadius = 48 / 2
+        self.locationButton.layer.cornerRadius = 36 / 2
         self.locationButton.clipsToBounds = true
     }
     
@@ -137,22 +160,27 @@ class MapView: MKMapView {
         
         let bounds = self.frame
         
-        let infoViewWidth: CGFloat = UIScreen.main.bounds.width <= 320 ? 130 : 145
+        let infoViewWidth: CGFloat = UIScreen.main.bounds.width <= 320 ? 120 : 135
         
         self.mapInfoView.frame = CGRect(x: bounds.width - infoViewWidth,
                                         y: 25,
                                         width: infoViewWidth,
                                         height: 26)
         
-        self.centerLabel.frame = CGRect(x: bounds.width / 2 - 12,
-                                        y: bounds.height / 2 - 2,
-                                        width: 24,
-                                        height: 24)
+        self.centerLabel.frame = CGRect(x: bounds.width / 2 - 16,
+                                        y: bounds.height / 2 - 6,
+                                        width: 32,
+                                        height: 32)
         
         self.locationButton.frame = CGRect(x: 5,
-                                           y: bounds.height - 48 - 5,
-                                           width: 48,
-                                           height: 48)
+                                           y: 25,
+                                           width: 80,
+                                           height: 36)
+        
+        self.scaleView.frame = CGRect(x: 5,
+                                      y: bounds.height - 50,
+                                      width: 150,
+                                      height: 20)
     }
     
     func refresh() {
@@ -172,9 +200,23 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
     private var timer: Timer?
     private var isBusy = false
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        var delta = mapView.region.span.longitudeDelta
+        if UIScreen.main.bounds.width > 500 {
+            delta *= 0.5
+        }
+        if delta >= 0.48 {
+            if mapView.centerCoordinate.longitude > 155 || mapView.centerCoordinate.longitude < 121 {
+                return //日本より東か西
+            }
+        }
+        
         self.tileRefresh(mapView: mapView, force: false)
         // 最大30fpsで更新
         self.timer = Timer.scheduledTimer(timeInterval: 0.033, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+        
+        if let mapView = MapView.instance {
+            mapView.scaleView.setNeedsLayout()
+        }
     }
     
     func timerAction() {
@@ -182,6 +224,8 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         
         if Chiriin.isBusy() { return }
         self.tileRefresh(mapView: mapView, force: false)
+        
+        mapView.scaleView.setNeedsLayout()
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -192,6 +236,9 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         
         if Chiriin.memCacheData.count > 20 {
             Chiriin.memCacheData = [:]
+        }
+        if let mapView = MapView.instance {
+            mapView.scaleView.setNeedsLayout()
         }
     }
     
@@ -269,14 +316,14 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
             var y = y1
             var iy: Int = 0
             while y < y2 {
-                var url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/dem_png/\(zoom)/\(Int(x1))/\(Int(y)).png")!
+                var url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x1))/\(Int(y)).png")!
                 var memData = Chiriin.memCacheData[url]
                 var x = x1
                 var ix: Int = 0
                 while x < x2 {
                     // タイル画像をダウンロード
                     if Int(x) - Int(x - Double(1) / 256) != 0 {
-                        url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/dem_png/\(zoom)/\(Int(x))/\(Int(y)).png")!
+                        url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x))/\(Int(y)).png")!
                         memData = Chiriin.memCacheData[url]
                     }
                     let rx = (x - floor(x)) * 256
@@ -288,7 +335,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
                         let height = Chiriin.getPngHeight(pixelArray: memData, x: xx, y: yy)
                         var upHeight = height
                         if ry - 1 < 0 {
-                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/dem_png/\(zoom)/\(Int(x))/\(Int(y - 1)).png")!
+                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x))/\(Int(y - 1)).png")!
                             if let memData2 = Chiriin.memCacheData[url] {
                                 upHeight = Chiriin.getPngHeight(pixelArray: memData2, x: xx, y: yy - 1 + 256)
                             }
@@ -297,7 +344,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
                         }
                         var leftHeight = height
                         if rx - 1 < 0 {
-                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/dem_png/\(zoom)/\(Int(x - 1))/\(Int(y)).png")!
+                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x - 1))/\(Int(y)).png")!
                             if let memData2 = Chiriin.memCacheData[url] {
                                 leftHeight = Chiriin.getPngHeight(pixelArray: memData2, x: xx - 1 + 256, y: yy)
                             }

@@ -28,7 +28,7 @@ class SettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "設定"
+        self.title = "機能"
         
         let leftButton = UIBarButtonItem(title: "完了", style: .done, target: self, action: #selector(close))
         self.navigationItem.leftBarButtonItem = leftButton

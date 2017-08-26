@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ControlView: UIView {
+class ControlView: UIView, UIPopoverPresentationControllerDelegate {
     let menuButton = UIButton() // メニュー表示ボタン
     
     private var isOpenMenu = false
@@ -30,11 +30,11 @@ class ControlView: UIView {
     }
     
     private func setUp() {
-        let buttonWidth: CGFloat = 48
+        let buttonWidth: CGFloat = 36
         
         self.clipsToBounds = true
         
-        self.menuButton.setTitle("⚙", for: .normal)
+        self.menuButton.setTitle("機能", for: .normal)
         self.menuButton.backgroundColor = UIColor.gray
         self.menuButton.layer.cornerRadius = buttonWidth / 2
         self.menuButton.clipsToBounds = true
@@ -45,22 +45,30 @@ class ControlView: UIView {
         
         //let bounds = self.superview?.frame ?? UIScreen.main.bounds
         
-        let buttonWidth: CGFloat = 48
-        
-        self.frame = CGRect(x: 5,
+        self.frame = CGRect(x: 100,
                             y: 25,
-                            width: buttonWidth,
-                            height: buttonWidth)
+                            width: 80,
+                            height: 36)
         
         self.menuButton.frame = CGRect(x: 0,
                                        y: 0,
-                                       width: buttonWidth,
-                                       height: buttonWidth)
+                                       width: 70,
+                                       height: 36)
     }
     
     // 設定画面に移動
     func menuAction() {
         let vc = SettingsViewController()
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            vc.modalPresentationStyle = .popover
+            vc.preferredContentSize = CGSize(width: 300, height: 300)
+            vc.popoverPresentationController?.sourceView = self
+            vc.popoverPresentationController?.sourceRect = self.menuButton.frame
+            vc.popoverPresentationController?.permittedArrowDirections = .any
+            vc.popoverPresentationController?.delegate = self
+        }
+        
         MapViewController.instance?.present(vc, animated: true, completion: nil)
     }
 }

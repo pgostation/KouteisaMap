@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		125CBAD91F5159D8009976EA /* icon_109760_256.png in Resources */ = {isa = PBXBuildFile; fileRef = 125CBAD81F5159D8009976EA /* icon_109760_256.png */; };
+		125CBADB1F51708A009976EA /* ScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CBADA1F51708A009976EA /* ScaleView.swift */; };
 		1282EADE1F4DC1890036B87F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EADD1F4DC1890036B87F /* AppDelegate.swift */; };
 		1282EAE01F4DC1890036B87F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282EADF1F4DC1890036B87F /* ViewController.swift */; };
 		1282EAE31F4DC1890036B87F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1282EAE11F4DC1890036B87F /* Main.storyboard */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		125CBAD81F5159D8009976EA /* icon_109760_256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_109760_256.png; path = img/icon_109760_256.png; sourceTree = "<group>"; };
+		125CBADA1F51708A009976EA /* ScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScaleView.swift; path = Map/ScaleView.swift; sourceTree = "<group>"; };
 		1282EADA1F4DC1890036B87F /* KouteisaMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KouteisaMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1282EADD1F4DC1890036B87F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1282EADF1F4DC1890036B87F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +57,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		125CBAD71F5159C2009976EA /* img */ = {
+			isa = PBXGroup;
+			children = (
+				125CBAD81F5159D8009976EA /* icon_109760_256.png */,
+			);
+			name = img;
+			sourceTree = "<group>";
+		};
 		1282EAD11F4DC1890036B87F = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +86,7 @@
 			children = (
 				1282EADD1F4DC1890036B87F /* AppDelegate.swift */,
 				1282EADF1F4DC1890036B87F /* ViewController.swift */,
+				125CBAD71F5159C2009976EA /* img */,
 				1282EAEF1F4DC4EB0036B87F /* Map */,
 				1282EAFD1F4DC6E00036B87F /* Settings */,
 				1282EAFA1F4DC6970036B87F /* Data */,
@@ -94,6 +107,7 @@
 				1282EAF41F4DC5B10036B87F /* MapInfoView.swift */,
 				1282EAF61F4DC5CB0036B87F /* MapControlView.swift */,
 				1282EAF81F4DC6040036B87F /* ControlView.swift */,
+				125CBADA1F51708A009976EA /* ScaleView.swift */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -156,7 +170,7 @@
 					1282EAD91F4DC1890036B87F = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = L5M8K6XWJN;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -184,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1282EAE81F4DC1890036B87F /* LaunchScreen.storyboard in Resources */,
+				125CBAD91F5159D8009976EA /* icon_109760_256.png in Resources */,
 				1282EAE51F4DC1890036B87F /* Assets.xcassets in Resources */,
 				1282EAE31F4DC1890036B87F /* Main.storyboard in Resources */,
 			);
@@ -205,6 +220,7 @@
 				1282EAF51F4DC5B10036B87F /* MapInfoView.swift in Sources */,
 				1282EAF91F4DC6040036B87F /* ControlView.swift in Sources */,
 				1282EAFC1F4DC6AF0036B87F /* Chiriin.swift in Sources */,
+				125CBADB1F51708A009976EA /* ScaleView.swift in Sources */,
 				1282EAF71F4DC5CB0036B87F /* MapControlView.swift in Sources */,
 				1282EAFF1F4DC6F10036B87F /* SettingsViewController.swift in Sources */,
 			);
@@ -331,15 +347,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = L5M8K6XWJN;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = KouteisaMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pgostation.kouteisamap2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8cad9759-fee3-45c6-ad16-978c06c67790";
-				PROVISIONING_PROFILE_SPECIFIER = KouteisaMap;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -348,15 +364,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = L5M8K6XWJN;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = KouteisaMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pgostation.kouteisamap2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8cad9759-fee3-45c6-ad16-978c06c67790";
-				PROVISIONING_PROFILE_SPECIFIER = KouteisaMap;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -380,6 +396,7 @@
 				1282EAEE1F4DC1890036B87F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
