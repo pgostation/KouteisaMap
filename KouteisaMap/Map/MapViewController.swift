@@ -310,6 +310,8 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         })
     }
     
+    private var lastMinHeight: Double = 9999
+    private var lastMaxHeight: Double = 0
     private func tileRefresh(mapView: MapView, centerHeight: Double, noUpdate: Bool) {
         let topLeft = CGPoint(x: 0, y: 0)
         let topLeftCoord = mapView.convert(topLeft, toCoordinateFrom: mapView)
@@ -343,6 +345,9 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         
         let (x1, y1) = getTileXY(zoom: zoom, coord: topLeftCoord)
         let (x2, y2) = getTileXY(zoom: zoom, coord: bottomRightCoord)
+        
+        var minHeight: Double = 9999
+        var maxHeight: Double = 0
         
         if !noUpdate {
             var y = y1
@@ -384,6 +389,15 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
                             leftHeight = Chiriin.getPngHeight(pixelArray: memData, x: xx - 1, y: yy)
                         }
                         tileRefreshCallback(ix: ix, iy: iy, centerHeight: centerHeight, origHeight: height, upHeight: upHeight, leftHeight: leftHeight)
+                        
+                        if let height = height {
+                            if height < minHeight {
+                                minHeight = height
+                            }
+                            if height > maxHeight {
+                                maxHeight = height
+                            }
+                        }
                     }
                     else {
                         Chiriin.getHeight(url: url, rx: rx, ry: ry, ix: ix, iy: iy, centerHeight: centerHeight, callback: self.tileRefreshCallback)
@@ -394,6 +408,9 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
                 y += Double(1) / 256
                 iy += 1
             }
+            
+            self.lastMinHeight = minHeight
+            self.lastMaxHeight = maxHeight
         }
         
         DispatchQueue.main.async {
@@ -417,6 +434,15 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         
         let k = pow(1.5, Double(lastZoom)) / 58
         
+        var maxHeightRate: Double = 300
+        var minHeightRate: Double = 300
+        if self.lastMaxHeight > centerHeight + k * maxHeightRate {
+            maxHeightRate = k * (self.lastMaxHeight - centerHeight)
+        }
+        if self.lastMinHeight < centerHeight - k * minHeightRate {
+            minHeightRate = k * (centerHeight - self.lastMinHeight)
+        }
+        
         var r: CGFloat = 0
         var g: CGFloat = 1
         var b: CGFloat = 0
@@ -429,7 +455,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         }
         else if diff > 30 {
             r = 1
-            g = CGFloat(min(1.0, (diff - 30) / 300))
+            g = CGFloat(min(1.0, (diff - 30) / maxHeightRate))
             b = g
         } else if diff > 10 {
             r = 1
