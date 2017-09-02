@@ -55,7 +55,7 @@ class MapControlView: UIView {
         let bounds = self.superview?.frame ?? UIScreen.main.bounds
         
         self.frame = CGRect(x: bounds.width - 45,
-                            y: bounds.height - 95,
+                            y: bounds.height - 105,
                             width: 40,
                             height: 90)
         
