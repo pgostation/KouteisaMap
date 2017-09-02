@@ -30,6 +30,39 @@ class MapViewController: UIViewController {
         
         let kupaaGesture = UIPinchGestureRecognizer(target: self, action: #selector(kupaaAction(_:)))
         view.addGestureRecognizer(kupaaGesture)
+        
+        setMapType(str: Settings.mapType)
+    }
+    
+    func setMapType(str: String) {
+        if str == "標準" {
+            MapView.instance?.mapType = .standard
+            tanshoku(bool: false)
+        }
+        else if str == "航空写真" {
+            MapView.instance?.mapType = .hybrid
+            tanshoku(bool: false)
+        }
+        else if str == "国土地理院" {
+            tanshoku(bool: true)
+        }
+    }
+    
+    func tanshoku(bool: Bool) {
+        guard let view = self.view as? MapView else { return }
+        
+        if bool {
+            let template = "https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png"
+            let overlay = MyTileOverlay(urlTemplate: template)
+            overlay.canReplaceMapContent = true
+            view.add(overlay, level: .aboveLabels)
+        } else {
+            for overlay in view.overlays {
+                if let overlay = overlay as? MyTileOverlay {
+                    view.remove(overlay)
+                }
+            }
+        }
     }
     
     private var timer: Timer?
@@ -128,9 +161,8 @@ class MapView: MKMapView {
         
         // プロパティ設定
         self.isRotateEnabled = false
-        //self.isZoomEnabled = false
+        self.isZoomEnabled = false
         self.isPitchEnabled = false
-        self.showsScale = true
         
         // 位置表示
         if CLLocationManager.authorizationStatus() == .notDetermined {
@@ -445,5 +477,13 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         }
         
         objc_sync_exit(mapView.tileLayersView)
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let overlay = overlay as? MyTileOverlay {
+            return MKTileOverlayRenderer(overlay: overlay)
+        }
+        
+        return MKTileOverlayRenderer()
     }
 }

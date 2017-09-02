@@ -100,11 +100,6 @@ class ScaleView: UIView {
         let viewWidth = CGFloat(100 / lengthPerPixel)
         let lengthString = 100 * rate >= 1000 ? "\(Int(100 * rate / 1000))km" : "\(Int(100 * rate))m"
         
-        print("#### --")
-        print("#### viewWidth=\(viewWidth)")
-        print("#### rate=\(rate)")
-        print("#### \(Double(viewWidth) * loc2.distance(from: loc1))")
-        
         return (lengthString, viewWidth)
     }
 }

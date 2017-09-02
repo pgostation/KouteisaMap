@@ -7,11 +7,12 @@
 //
 
 import UIKit
-import MapKit
 
 enum SettingsEnum: String {
     case search = "地名検索"
+    case mapType = "地図の種類"
     case shareApp = "Twitter等でアプリを紹介する"
+    case peteLink = "おすすめアプリ"
 }
 
 class SettingsViewController: UINavigationController {
@@ -49,62 +50,28 @@ class SettingsTableViewController: UITableViewController {
         let item = mySource.tableList[indexPath.item]
         switch item {
         case .search:
-            searchAction()
+            Settings.searchAction(viewController: self)
+        case .mapType:
+            let childViewController = SettingsSelectViewController(
+                items: ["標準", "航空写真", "国土地理院"],
+                selected: Settings.mapType,
+                callback: { value in
+                    Settings.mapType = value
+            })
+            childViewController.title = item.rawValue
+            self.navigationController?.pushViewController(childViewController, animated: true)
         case .shareApp:
-            shareApp()
+            Settings.shareApp(viewController: self)
+        case .peteLink:
+            let peteAppPage = URL(string: "itms-apps://itunes.apple.com/app/id1184708726")!
+            let childViewController = SettingsLinksViewController(
+                items: ["Pete(ピート)"],
+                subtitles: ["位置情報と地図とコミュニケーションのアプリ"],
+                urls: [peteAppPage])
+            self.navigationController?.pushViewController(childViewController, animated: true)
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func searchAction() {
-        ViewUtil.textInput(msg: "地名を入力してください", defaultText: "", okName: "検索", callback: { text in
-            let request = MKLocalSearchRequest()
-            request.naturalLanguageQuery = text
-            
-            MKLocalSearch(request: request).start(completionHandler: {
-                (response: MKLocalSearchResponse?, error: Error?) in
-                
-                if let error = error {
-                    print("searchAction(): \(error.localizedDescription)")
-                    return
-                }
-                
-                if response?.mapItems.count == 0 {
-                    ViewUtil.alert(msg: "見つかりませんでした")
-                    return
-                }
-                
-                if let item = response?.mapItems.first {
-                    self.view.alpha = 0.5
-                    
-                    MapView.instance?.setCenter(item.placemark.coordinate, animated: false)
-                    
-                    DispatchQueue.main.async {
-                        self.close()
-                    }
-                }
-            })
-        })
-    }
-    
-    // 共有パネルを表示
-    func shareApp() {
-        let shareText = "色で高低差が分かる iPhoneアプリ「Rainbow Map」"
-        let shareWebsite = URL(string: "itms-apps://itunes.apple.com/app/####")!
-        
-        let activityItems: [Any] = [shareText, shareWebsite]
-        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        
-        // 使用しないアクティビティタイプ
-        let excludedActivityTypes = [
-            UIActivityType.addToReadingList,
-            UIActivityType.saveToCameraRoll,
-            UIActivityType.print
-        ]
-        activityViewController.excludedActivityTypes = excludedActivityTypes
-        
-        self.present(activityViewController, animated: true, completion: nil)
     }
 }
 
@@ -112,9 +79,20 @@ class SettingsView: UITableView {
 }
 
 class SettingsTable: NSObject, UITableViewDataSource {
-    var tableList:[SettingsEnum] = [.search, .shareApp]
+    let tableList:[SettingsEnum]
     
     override init() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            tableList = [.search,
+                         .mapType,
+                         .peteLink]
+        } else {
+            tableList = [.search,
+                         .mapType,
+                         .shareApp,
+                         .peteLink]
+        }
+        
         super.init()
     }
     
@@ -131,8 +109,12 @@ class SettingsTable: NSObject, UITableViewDataSource {
         
         switch item {
         case .search:
+            break
+        case .mapType:
             cell.accessoryType = .disclosureIndicator
         case .shareApp:
+            break
+        case .peteLink:
             cell.accessoryType = .disclosureIndicator
         }
         
