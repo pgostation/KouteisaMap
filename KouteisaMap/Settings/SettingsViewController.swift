@@ -11,6 +11,7 @@ import UIKit
 enum SettingsEnum: String {
     case search = "地名検索"
     case mapType = "地図の種類"
+    case sensitiveMode = "表示モード"
     case shareApp = "Twitter等でアプリを紹介する"
     case peteLink = "おすすめアプリ"
 }
@@ -60,6 +61,15 @@ class SettingsTableViewController: UITableViewController {
             })
             childViewController.title = item.rawValue
             self.navigationController?.pushViewController(childViewController, animated: true)
+        case .sensitiveMode:
+            let childViewController = SettingsSelectViewController(
+                items: ["微小高低差", "標準", "山間部"],
+                selected: Settings.sensitiveMode,
+                callback: { value in
+                    Settings.sensitiveMode = value
+            })
+            childViewController.title = item.rawValue
+            self.navigationController?.pushViewController(childViewController, animated: true)
         case .shareApp:
             Settings.shareApp(viewController: self)
         case .peteLink:
@@ -85,10 +95,12 @@ class SettingsTable: NSObject, UITableViewDataSource {
         if UIDevice.current.userInterfaceIdiom == .pad {
             tableList = [.search,
                          .mapType,
+                         .sensitiveMode,
                          .peteLink]
         } else {
             tableList = [.search,
                          .mapType,
+                         .sensitiveMode,
                          .shareApp,
                          .peteLink]
         }
@@ -112,6 +124,10 @@ class SettingsTable: NSObject, UITableViewDataSource {
             break
         case .mapType:
             cell.accessoryType = .disclosureIndicator
+            cell.detailTextLabel?.text = Settings.mapType
+        case .sensitiveMode:
+            cell.accessoryType = .disclosureIndicator
+            cell.detailTextLabel?.text = Settings.sensitiveMode
         case .shareApp:
             break
         case .peteLink:

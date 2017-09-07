@@ -111,7 +111,13 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
             delta *= 0.5
         }
         var zoom = 6
-        if delta < 0.03 {
+        if delta < 0.004 {
+            zoom = 15
+        } else if delta < 0.008 {
+            zoom = 14
+        } else if delta < 0.015 {
+            zoom = 13
+        } else if delta < 0.03 {
             zoom = 12
         } else if delta < 0.06 {
             zoom = 11
@@ -141,14 +147,14 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
             var y = y1
             var iy: Int = 0
             while y < y2 {
-                var url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x1))/\(Int(y)).png")!
+                var url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom == 15 ? "dem5a_png" : (zoom > 8 ? "dem_png" : "demgm_png"))/\(zoom)/\(Int(x1))/\(Int(y)).png")!
                 var memData = Chiriin.memCacheData[url]
                 var x = x1
                 var ix: Int = 0
                 while x < x2 {
                     // タイル画像をダウンロード
                     if Int(x) - Int(x - Double(1) / 256) != 0 {
-                        url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x))/\(Int(y)).png")!
+                        url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom == 15 ? "dem5a_png" : (zoom > 8 ? "dem_png" : "demgm_png"))/\(zoom)/\(Int(x))/\(Int(y)).png")!
                         memData = Chiriin.memCacheData[url]
                     }
                     let rx = (x - floor(x)) * 256
@@ -160,7 +166,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
                         let height = Chiriin.getPngHeight(pixelArray: memData, x: xx, y: yy)
                         var upHeight = height
                         if ry - 1 < 0 {
-                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x))/\(Int(y - 1)).png")!
+                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom == 15 ? "dem5a_png" : (zoom > 8 ? "dem_png" : "demgm_png"))/\(zoom)/\(Int(x))/\(Int(y - 1)).png")!
                             if let memData2 = Chiriin.memCacheData[url] {
                                 upHeight = Chiriin.getPngHeight(pixelArray: memData2, x: xx, y: yy - 1 + 256)
                             }
@@ -169,7 +175,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
                         }
                         var leftHeight = height
                         if rx - 1 < 0 {
-                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(x - 1))/\(Int(y)).png")!
+                            url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom == 15 ? "dem5a_png" : (zoom > 8 ? "dem_png" : "demgm_png"))/\(zoom)/\(Int(x - 1))/\(Int(y)).png")!
                             if let memData2 = Chiriin.memCacheData[url] {
                                 leftHeight = Chiriin.getPngHeight(pixelArray: memData2, x: xx - 1 + 256, y: yy)
                             }
@@ -220,7 +226,15 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         let height = origHeight ?? 0
         guard let mapView = MapView.instance else { return }
         
-        let k = pow(1.5, Double(lastZoom)) / 58
+        var k = pow(1.5, Double(lastZoom)) / 58
+        
+        let modeStr = Settings.sensitiveMode
+        if modeStr == "微小高低差" {
+            k *= 10
+        }
+        else if modeStr == "山間部" {
+            k /= 10
+        }
         
         var maxHeightRate: Double = 300
         var minHeightRate: Double = 300

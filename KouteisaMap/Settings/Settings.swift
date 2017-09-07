@@ -12,7 +12,7 @@ import MapKit
 class Settings {
     private static let userDefaults = UserDefaults.standard
     
-    // 設定
+    // 地図の種類設定
     static var mapType: String {
         get {
             return userDefaults.string(forKey: "mapType") ?? "標準"
@@ -21,6 +21,18 @@ class Settings {
             userDefaults.set(str, forKey: "mapType")
             
             MapViewController.instance?.setMapType(str: str)
+        }
+    }
+    
+    // 表示モード設定
+    static var sensitiveMode: String {
+        get {
+            return userDefaults.string(forKey: "sensitiveMode") ?? "標準"
+        }
+        set(str) {
+            userDefaults.set(str, forKey: "sensitiveMode")
+            
+            MapView.instance?.refresh()
         }
     }
     

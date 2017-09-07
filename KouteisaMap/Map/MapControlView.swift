@@ -89,7 +89,7 @@ class MapControlView: UIView {
         region.span = MKCoordinateSpan(latitudeDelta: region.span.latitudeDelta / 2, longitudeDelta: region.span.longitudeDelta / 2)
         mapView.setRegion(region, animated: true)
         
-        if mapView.region.span.longitudeDelta < 0.01 {
+        if mapView.region.span.longitudeDelta < 0.005 {
             self.largerButton.isEnabled = false
             self.largerButton.alpha = 0.5
         }

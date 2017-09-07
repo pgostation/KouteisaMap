@@ -23,7 +23,7 @@ class Chiriin {
         let rx = (xTile - floor(xTile)) * 256.0
         let ry = (yTile - floor(yTile)) * 256.0
         
-        let url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom > 8 ? "dem_png" : "demgm_png")/\(zoom)/\(Int(xTile))/\(Int(yTile)).png")!
+        let url = URL(string: "https://cyberjapandata.gsi.go.jp/xyz/\(zoom == 15 ? "dem5a_png" : (zoom > 8 ? "dem_png" : "demgm_png"))/\(zoom)/\(Int(xTile))/\(Int(yTile)).png")!
         
         getHeight(url: url, rx: rx, ry: ry, ix: 0, iy: 0, centerHeight: 0, callback: callback)
     }
