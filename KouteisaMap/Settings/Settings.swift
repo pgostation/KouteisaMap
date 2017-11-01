@@ -21,6 +21,8 @@ class Settings {
             userDefaults.set(str, forKey: "mapType")
             
             MapViewController.instance?.setMapType(str: str)
+            
+            (SettingsTableViewController.instance?.view as? SettingsView)?.reloadData()
         }
     }
     
@@ -33,6 +35,8 @@ class Settings {
             userDefaults.set(str, forKey: "sensitiveMode")
             
             MapView.instance?.refresh()
+            
+            (SettingsTableViewController.instance?.view as? SettingsView)?.reloadData()
         }
     }
     

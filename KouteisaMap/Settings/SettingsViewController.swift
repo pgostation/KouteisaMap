@@ -25,6 +25,8 @@ class SettingsViewController: UINavigationController {
 }
 
 class SettingsTableViewController: UITableViewController {
+    static weak var instance: SettingsTableViewController?
+    
     private let mySource = SettingsTable()
     
     override func viewDidLoad() {
@@ -40,6 +42,8 @@ class SettingsTableViewController: UITableViewController {
         
         view.delegate = self
         view.dataSource = mySource
+        
+        SettingsTableViewController.instance = self
     }
     
     func close() {

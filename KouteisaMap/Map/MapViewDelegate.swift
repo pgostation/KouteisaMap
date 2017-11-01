@@ -114,7 +114,11 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         if delta < 0.004 {
             zoom = 15
         } else if delta < 0.008 {
-            zoom = 14
+            if Settings.sensitiveMode == "微小高低差" {
+                zoom = 15
+            } else {
+                zoom = 14
+            }
         } else if delta < 0.015 {
             zoom = 13
         } else if delta < 0.03 {
@@ -230,10 +234,10 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         
         let modeStr = Settings.sensitiveMode
         if modeStr == "微小高低差" {
-            k *= 10
+            k *= 5
         }
         else if modeStr == "山間部" {
-            k /= 10
+            k /= 5
         }
         
         var maxHeightRate: Double = 300
