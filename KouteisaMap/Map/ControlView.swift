@@ -45,8 +45,10 @@ class ControlView: UIView, UIPopoverPresentationControllerDelegate {
         
         //let bounds = self.superview?.frame ?? UIScreen.main.bounds
         
+        let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+        
         self.frame = CGRect(x: 100,
-                            y: 25,
+                            y: statusBarHeight + 5,
                             width: 80,
                             height: 36)
         

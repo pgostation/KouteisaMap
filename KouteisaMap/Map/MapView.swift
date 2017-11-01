@@ -102,13 +102,15 @@ class MapView: MKMapView {
         
         let infoViewWidth: CGFloat = UIScreen.main.bounds.width <= 320 ? 120 : 135
         
+        let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+        
         self.licenseView.frame = CGRect(x: bounds.width - 80,
                                         y: bounds.height - 15,
                                         width: 85,
                                         height: 15)
         
         self.mapInfoView.frame = CGRect(x: bounds.width - infoViewWidth,
-                                        y: 25,
+                                        y: statusBarHeight + 5,
                                         width: infoViewWidth,
                                         height: 26)
         
@@ -118,7 +120,7 @@ class MapView: MKMapView {
                                         height: 32)
         
         self.locationButton.frame = CGRect(x: 5,
-                                           y: 25,
+                                           y: statusBarHeight + 5,
                                            width: 80,
                                            height: 36)
         

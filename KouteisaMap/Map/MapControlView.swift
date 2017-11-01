@@ -54,8 +54,10 @@ class MapControlView: UIView {
         
         let bounds = self.superview?.frame ?? UIScreen.main.bounds
         
+        let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+        
         self.frame = CGRect(x: bounds.width - 45,
-                            y: bounds.height - 105,
+                            y: bounds.height - 85 - statusBarHeight,
                             width: 40,
                             height: 90)
         
